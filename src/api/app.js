@@ -1,8 +1,10 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 
+const { userController, recipesController } = require('../../controllers');
+
 const errorMiddleware = require('../../middlewares/errorControler');
-const { userController } = require('../../controllers');
+const authentication = require('../../middlewares/authentication');
 
 const app = express();
 
@@ -17,6 +19,8 @@ app.get('/', (request, response) => {
 app.get('/ping', (_req, res) => {
   res.send('pong');
 });
+
+app.post('/recipes', authentication, recipesController.create);
 
 app.post('/users', userController.create);
 
