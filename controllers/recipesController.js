@@ -26,10 +26,24 @@ const create = rescue(async (req, res, next) => {
 
 const getAll = rescue(async (rec, res, _next) => {
   const allRecipes = await RecipesService.getAll();
+
   return res.status(200).json(allRecipes);
+});
+
+const getOne = rescue(async (req, res, _next) => {
+  const { id } = req.params;
+
+  if (id.length < 24) return res.status(404).json({ message: 'recipe not found' });
+
+  const response = await RecipesService.getOne(id);
+
+  if (!response) return res.status(404).json({ message: 'recipe not found' });
+
+  return res.status(200).json(response);
 });
 
 module.exports = {
   create,
   getAll,
+  getOne,
 }; 
