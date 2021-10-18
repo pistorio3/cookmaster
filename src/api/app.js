@@ -26,6 +26,8 @@ app.get('/recipes', recipesController.getAll);
 
 app.get('/recipes/:id', recipesController.getOne);
 
+app.put('/recipes/:id', authentication, recipesController.updateOne);
+
 app.use(errorMiddleware);
 
 module.exports = app;

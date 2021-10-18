@@ -1,6 +1,7 @@
 const rescue = require('express-rescue');
 const Joi = require('joi');
-const RecipesService = require('../services/recipesService');
+
+const recipesService = require('../services/recipesService');
 
 const create = rescue(async (req, res, next) => {
   const { name, ingredients, preparation } = req.body;
@@ -13,7 +14,10 @@ const create = rescue(async (req, res, next) => {
 
   if (error) return res.status(400).json({ message: 'Invalid entries. Try again.' });
 
-  const newRecipe = await RecipesService.create(name, ingredients, preparation);
+  const { userId } = res;
+
+  const newRecipe = await recipesService.create(name, ingredients, preparation, userId);
+
   if (newRecipe.err) return next(newRecipe.err);
 
   return res.status(201).json({
@@ -24,8 +28,8 @@ const create = rescue(async (req, res, next) => {
   });
 });
 
-const getAll = rescue(async (rec, res, _next) => {
-  const allRecipes = await RecipesService.getAll();
+const getAll = rescue(async (_rec, res, _next) => {
+  const allRecipes = await recipesService.getAll();
 
   return res.status(200).json(allRecipes);
 });
@@ -35,15 +39,32 @@ const getOne = rescue(async (req, res, _next) => {
 
   if (id.length < 24) return res.status(404).json({ message: 'recipe not found' });
 
-  const response = await RecipesService.getOne(id);
+  const response = await recipesService.getOne(id);
 
   if (!response) return res.status(404).json({ message: 'recipe not found' });
 
   return res.status(200).json(response);
 });
 
+const updateOne = rescue(async (req, res, _next) => {
+  const { id } = req.params;
+  const { role, userId } = res;
+  const { name, ingredients, preparation } = req.body;
+
+  const recipe = await recipesService.getOne(id);
+
+  if (userId === recipe.userId || role === 'admin') {
+    await recipesService.updateOne(id, name, ingredients, preparation);
+
+    return res.status(200).json({ _id: id, name, ingredients, preparation, userId });
+  }
+
+  return res.status(401).json({ message: 'not authorized to edit this recipe' });
+});
+
 module.exports = {
   create,
   getAll,
   getOne,
+  updateOne,
 }; 
