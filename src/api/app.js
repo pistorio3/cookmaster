@@ -28,6 +28,8 @@ app.get('/recipes/:id', recipesController.getOne);
 
 app.put('/recipes/:id', authentication, recipesController.updateOne);
 
+app.delete('/recipes/:id', authentication, recipesController.deleteOne);
+
 app.use(errorMiddleware);
 
 module.exports = app;

@@ -62,9 +62,25 @@ const updateOne = rescue(async (req, res, _next) => {
   return res.status(401).json({ message: 'not authorized to edit this recipe' });
 });
 
+const deleteOne = rescue(async (req, res, _next) => {
+  const { id } = req.params;
+  const { role, userId } = res;
+
+  const recipe = await recipesService.getOne(id);
+
+  if (userId === recipe.userId || role === 'admin') {
+    await recipesService.deleteOne(id);
+
+    return res.status(204).send();
+  }
+
+  return res.status(401).json({ message: 'not authorized to delete this recipe' });
+});
+
 module.exports = {
   create,
   getAll,
   getOne,
   updateOne,
+  deleteOne,
 }; 
