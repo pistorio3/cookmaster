@@ -20,11 +20,11 @@ app.get('/ping', (_req, res) => {
   res.send('pong');
 });
 
-app.post('/recipes', authentication, recipesController.create);
-
 app.post('/users', userController.create);
 
 app.post('/login', userController.login);
+
+app.post('/recipes', authentication, recipesController.create);
 
 app.use(errorMiddleware);
 
