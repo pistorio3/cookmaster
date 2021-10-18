@@ -5,6 +5,11 @@ const create = async (name, email, password, role) => {
   return response;
 };
 
+const login = async (email, password) => {
+  const response = await userModel.login(email, password);
+  return response;
+};
+
 const findByEmail = async (email) => {
   const response = await userModel.findByEmail(email);
   return response;
@@ -12,5 +17,6 @@ const findByEmail = async (email) => {
 
 module.exports = {
   create,
+  login,
   findByEmail,
 }; 
