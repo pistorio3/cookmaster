@@ -56,7 +56,23 @@ const login = rescue(async (req, res, _next) => {
   return res.status(401).json({ message: 'Incorrect username or password' });
 });
 
+const createAdmin = rescue(async (req, res, next) => {
+  const { role } = res;
+  const { name, email, password } = req.body;
+
+  if (role !== 'admin') {
+    return res.status(403).json({ message: 'Only admins can register new admins' });
+  }
+
+  const newAdmin = await userService.create(name, email, password, role);
+
+  if (newAdmin.err) return next(newAdmin.err);
+
+  return res.status(201).json(newAdmin);
+});
+
 module.exports = {
   create,
   login,
+  createAdmin,
 }; 

@@ -1,5 +1,6 @@
 const rescue = require('express-rescue');
 const Joi = require('joi');
+const path = require('path');
 
 const recipesService = require('../services/recipesService');
 
@@ -82,6 +83,7 @@ const addImage = rescue(async (req, res, next) => {
   const { role, userId } = res;
 
   const recipe = await recipesService.getOne(id);
+  if (!recipe) return res.status(400).json({ message: 'recipe not found' });
 
   if (userId === recipe.userId || role === 'admin') {
     await recipesService.addImage(id, `${id}.jpeg`);
@@ -92,6 +94,12 @@ const addImage = rescue(async (req, res, next) => {
   return res.status(401).json({ message: 'not authorized to add image this recipe' });
 });
 
+const getImage = rescue((req, res) => {
+  const { id } = req.params;
+
+  return res.sendFile(`${id}.jpeg`, { root: path.join(__dirname, '..', 'uploads') });
+});
+
 module.exports = {
   create,
   getAll,
@@ -99,4 +107,5 @@ module.exports = {
   updateOne,
   deleteOne,
   addImage,
+  getImage,
 }; 

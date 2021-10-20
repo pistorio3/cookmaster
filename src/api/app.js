@@ -48,6 +48,10 @@ app.delete('/recipes/:id', authentication, recipesController.deleteOne);
 app.put('/recipes/:id/image', authentication, recipesController.addImage,
   upload.single('image'), (_req, res, _next) => res.status(200).json(res.response));
 
+app.post('/users/admin', authentication, userController.createAdmin);
+
+app.get('/recipes/:id/image', recipesController.getImage);
+
 app.use(errorMiddleware);
 
 module.exports = app;
