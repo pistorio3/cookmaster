@@ -3,10 +3,10 @@ const bodyParser = require('body-parser');
 const multer = require('multer');
 const path = require('path');
 
-const { userController, recipesController } = require('../../controllers');
+const { userController, recipesController } = require('../controllers');
 
-const errorMiddleware = require('../../middlewares/errorControler');
-const authentication = require('../../middlewares/authentication');
+const errorMiddleware = require('../middlewares/errorControler');
+const authentication = require('../middlewares/authentication');
 
 const app = express();
 

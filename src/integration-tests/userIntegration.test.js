@@ -22,8 +22,8 @@ describe('POST /users', () => {
     let response;
     before(async () => {
         response = await chai.request(server).post('/users').send({
-          email: 'test@email.com',
-          password: 'password',
+          email: 'testing@email.com',
+          password: 'myPassword',
         })
     });
 
@@ -48,7 +48,7 @@ describe('POST /users', () => {
     let response;
     before(async () => {
         response = await chai.request(server).post('/users').send({
-          name: 'John Connor',
+          name: 'John Doe',
           password: 'myPassword',
         })
     });

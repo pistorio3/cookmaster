@@ -7,6 +7,3 @@ const server = require('../api/app');
 
 chai.use(chaiHttp);
 const { expect } = chai;
-
-describe('', () => {
-});
