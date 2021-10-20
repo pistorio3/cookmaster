@@ -77,10 +77,26 @@ const deleteOne = rescue(async (req, res, _next) => {
   return res.status(401).json({ message: 'not authorized to delete this recipe' });
 });
 
+const addImage = rescue(async (req, res, next) => {
+  const { id } = req.params;
+  const { role, userId } = res;
+
+  const recipe = await recipesService.getOne(id);
+
+  if (userId === recipe.userId || role === 'admin') {
+    await recipesService.addImage(id, `${id}.jpeg`);
+    res.response = { ...recipe, image: `localhost:3000/src/uploads/${id}.jpeg` };
+
+    return next();
+  }
+  return res.status(401).json({ message: 'not authorized to add image this recipe' });
+});
+
 module.exports = {
   create,
   getAll,
   getOne,
   updateOne,
   deleteOne,
+  addImage,
 }; 

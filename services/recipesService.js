@@ -30,10 +30,17 @@ const deleteOne = async (id) => {
   return response;
 };
 
+const addImage = async (id, image) => {
+  const response = await recipesModel.addImage(id, image);
+
+  return response;
+};
+
 module.exports = {
   create,
   getAll,
   getOne,
   updateOne,
   deleteOne,
+  addImage,
 }; 
