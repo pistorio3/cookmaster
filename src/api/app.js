@@ -29,12 +29,14 @@ app.use(bodyParser.json());
 app.get('/', (request, response) => {
   response.send();
 });
-// Não remover esse end-point, ele é necessário para o avaliador
 
+// Requisito 1 - Cadastro de usuários
 app.post('/users', userController.create);
 
+// Requisito 2 - Login de usuários
 app.post('/login', userController.login);
 
+// Requisito 3 - Cadastro de receitas
 app.post('/recipes', authentication, recipesController.create);
 
 app.get('/recipes', recipesController.getAll);
