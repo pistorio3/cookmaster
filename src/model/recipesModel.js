@@ -1,6 +1,7 @@
 const { ObjectID } = require('mongodb');
 const getConnection = require('./connection');
 
+// Cria uma receita
 const create = async (name, ingredients, preparation, userId) => {
   const recipesCollection = await getConnection().then((db) => db.collection('recipes'));
   const response = await recipesCollection.insertOne({ name, ingredients, preparation, userId });
@@ -14,6 +15,7 @@ const create = async (name, ingredients, preparation, userId) => {
   };
 };
 
+// Lista todas as receitas cadastradas
 const getAll = async () => {
   const recipesCollection = await getConnection().then((db) => db.collection('recipes'));
   const response = await recipesCollection.find().toArray();
@@ -21,6 +23,7 @@ const getAll = async () => {
   return response;
 };
 
+// Busca uma receita pelo id
 const getOne = async (id) => {
   const recipesCollection = await getConnection().then((db) => db.collection('recipes'));
   const response = await recipesCollection.findOne({ _id: new ObjectID(id) });
@@ -28,6 +31,7 @@ const getOne = async (id) => {
   return response;
 };
 
+// Edita a receita pelo id
 const updateOne = async (id, name, ingredients, preparation) => {
   const recipesCollection = await getConnection().then((db) => db.collection('recipes'));
 
@@ -45,6 +49,7 @@ const updateOne = async (id, name, ingredients, preparation) => {
     }
 };
 
+// Deleta a receita com o id informado
 const deleteOne = async (id) => {
   const recipesCollection = await getConnection().then((db) => db.collection('recipes'));
 

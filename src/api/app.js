@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const multer = require('multer');
 const path = require('path');
 
+// Importação dos controllers
 const { userController, recipesController } = require('../controllers');
 
 const errorMiddleware = require('../middlewares/errorControler');
@@ -39,20 +40,27 @@ app.post('/login', userController.login);
 // Requisito 3 - Cadastro de receitas
 app.post('/recipes', authentication, recipesController.create);
 
+// Requisito 4 - Listagem de receitas
 app.get('/recipes', recipesController.getAll);
 
+// Requisito 5 - Buscar receita pelo id
 app.get('/recipes/:id', recipesController.getOne);
 
+// Requisito 7 - Edição de uma receita
 app.put('/recipes/:id', authentication, recipesController.updateOne);
 
+// Requisito 8 - Exclui uma receita
 app.delete('/recipes/:id', authentication, recipesController.deleteOne);
 
+// Requisito 9 - Adiciona imagem na receita
 app.put('/recipes/:id/image', authentication, recipesController.addImage,
   upload.single('image'), (_req, res, _next) => res.status(200).json(res.response));
 
-app.post('/users/admin', authentication, userController.createAdmin);
-
+// Requisito 10 - Acessar a imagem de uma receita
 app.get('/recipes/:id/image', recipesController.getImage);
+
+// Requisito 12 - Criar usuário admin
+app.post('/users/admin', authentication, userController.createAdmin);
 
 app.use(errorMiddleware);
 

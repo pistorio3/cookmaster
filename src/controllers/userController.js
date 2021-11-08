@@ -50,6 +50,7 @@ const create = rescue(async (req, res, next) => {
 
   // Cria um novo usuário com as informações que foram passadas
   const newUser = await userService.create(name, email, password, role);
+  
   // Caso ocorra algum erro na criação retorna mensagem de erro
   if (newUser.err) return next(newUser.err);
 
